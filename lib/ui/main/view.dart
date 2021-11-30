@@ -152,7 +152,7 @@ class BottomNavigation extends GetWidget<MainLogic> {
             onPressed: () {
               controller.selectPage(2);
             },
-            child: const Text('搜藏'),
+            child: const Text('收藏'),
           ),
           TextButton(
             onPressed: () {
