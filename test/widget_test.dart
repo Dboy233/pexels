@@ -7,12 +7,36 @@
 
 import 'dart:math';
 
+
+class Anim {
+ ///单例模式
+ Anim._internal();
+
+ ///单例模式
+ static Anim? _instance;
+
+ ///单例模式
+ factory Anim() => _getInstance();
+
+ ///单例模式
+ static Anim get instance => _getInstance();
+
+ ///单例模式
+ static Anim _getInstance(){
+     _instance ??= Anim._internal();
+     return _instance!;
+ }
+
+}
+
 void main() {
-  var random = Random();
- int r=  random.nextInt(255);
- int g=  random.nextInt(255);
- int b=  random.nextInt(255);
- int a= random.nextInt(255);
-  print(" r$r g$g b$b a$a");
+ var anim1 = Anim();
+
+ var anim2 = Anim.instance;
+
+ print("anim1 ${anim1.hashCode} anim2 ${anim2.hashCode}");
+
+ print("anim1 ${anim1 == anim2?"等于":"不等于"} anim2");
+
 }
 

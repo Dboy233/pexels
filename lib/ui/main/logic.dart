@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pexels/net/net_config.dart';
+import 'package:pexels/tools/sp_key.dart';
+import 'package:pexels/tools/sp_utils.dart';
 import 'package:pexels/ui/collections/view.dart';
 import 'package:pexels/ui/home/view.dart';
 import 'package:pexels/ui/search/view.dart';
@@ -42,22 +44,20 @@ class MainLogic extends GetxController {
     pageIndex.value = index;
   }
 
-  ///检查Pexels认证状态
+  ///检查Pexels认证状态，当app 初始化的时候会对[User_Auth]进行赋值，如果之前保存了数据
+  ///则，[User_Auth] 是用户自己设置的认证key
   checkPexelsAuthStatus() async {
-    var auth = User_Auth;
-    if (auth == null || auth.isEmpty) {
+    if (User_Auth == null || User_Auth?.isEmpty==true) {
       pexelsAuthState.toggle();
     }
   }
 
   ///保存用户的Auth
   void saveUserAuth(String? auth) async {
-    if (auth == null) {
-      User_Auth = PEXELS_KEY_DEF;
-    } else {
-      User_Auth = auth;
-    }
+    //如果数据为null 使用 默认Auth
+    var authStr = auth?.isNotEmpty == true ? auth! : PEXELS_KEY_DEF;
+    User_Auth = authStr;
+    SpKey.USER_AUTH.setSpString(authStr);
     pexelsAuthState.toggle();
   }
-
 }
