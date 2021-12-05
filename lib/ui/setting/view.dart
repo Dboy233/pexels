@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'logic.dart';
 
@@ -60,13 +61,17 @@ class SettingPage extends StatelessWidget {
           SizedBox(
             height: 15.h,
           ),
-          Text(
-            'https://github.com/Dboy233',
-            style: TextStyle(
-                color: Colors.lightBlueAccent,
-                fontSize: 40.sp,
-                fontWeight: FontWeight.w400),
-          ),
+          TextButton(
+              onPressed: () {
+                _launchURL('https://github.com/Dboy233');
+              },
+              child: Text(
+                'https://github.com/Dboy233',
+                style: TextStyle(
+                    color: Colors.lightBlueAccent,
+                    fontSize: 40.sp,
+                    fontWeight: FontWeight.w400),
+              )),
           SizedBox(
             height: 200.h,
           ),
@@ -101,6 +106,11 @@ class SettingPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  ///打开网页地址
+  void _launchURL(String url) async {
+    if (!await launch(url)) Get.log('Could not launch $url');
   }
 
   ///tile item Widget

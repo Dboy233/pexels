@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:glass_kit/glass_kit.dart';
 import 'package:pexels/tools/scroll_direction.dart';
+import 'package:pexels/widget/widget_download_dialog.dart';
 
 import 'logic.dart';
 
@@ -30,7 +31,35 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     //监听
     logic.pexelsAuthState.listen(showSettingKeyDialog);
+    //消息提示监听
+    logic.msgTip.listen(showMsgTip);
+
+    ///下载状态监听
+    logic.downloadState.listen(showDownloadDialog);
     super.initState();
+  }
+
+  ///显示Loading弹窗
+  void showDownloadDialog(bool isShow) {
+    if (isShow) {
+      Get.dialog(
+        const DownloadDialog(),
+        barrierDismissible: false,
+        useSafeArea: false,
+      );
+    }
+  }
+
+  ///显示提示消息
+  void showMsgTip(String msg) {
+    Get.showSnackbar(GetSnackBar(
+      backgroundColor: Colors.blue,
+      messageText: Text(
+        msg,
+        style: const TextStyle(color: Colors.white),
+      ),
+      duration: const Duration(seconds: 2),
+    ));
   }
 
   @override

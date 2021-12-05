@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:get/get.dart';
 import 'package:pexels/widget/empty_tip_widget.dart';
-import 'package:pexels/widget/photo_widget.dart';
+import 'package:pexels/widget/item_photo_widget.dart';
 
 import 'logic.dart';
 

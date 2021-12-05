@@ -2,6 +2,9 @@
     package="io.github.dboy233.pexels">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="pexels">

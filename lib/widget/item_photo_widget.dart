@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:pexels/net/bean/photo.dart';
 import 'package:pexels/tools/util.dart';
 import 'package:pexels/ui/main/logic.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../main_router.dart';
 
@@ -23,7 +24,7 @@ class PhotoItemWidget extends GetWidget<MainLogic> {
       children: [
         //作者名字
         Padding(
-          padding: EdgeInsets.only(top: 80.h, left: 30.w, bottom: 28.h),
+          padding: EdgeInsets.only(top: 80.h, left: 30.w,bottom: 24.h),
           child: Text(
             photo.photographer ?? "",
             style: const TextStyle(
@@ -36,11 +37,18 @@ class PhotoItemWidget extends GetWidget<MainLogic> {
         //作者主页
         Padding(
           padding: EdgeInsets.only(left: 30.w, bottom: 30.h),
-          child: Text(
-            photo.photographerUrl ?? "",
-            style: const TextStyle(
-              fontSize: 14,
-              color: Color(0xff757576),
+          child: GestureDetector(
+            onTap: () {
+              if (photo.photographerUrl?.isNotEmpty == true) {
+                launch(photo.photographerUrl!);
+              }
+            },
+            child: Text(
+              photo.photographerUrl ?? "",
+              style: const TextStyle(
+                fontSize: 14,
+                color: Color(0xff757576),
+              ),
             ),
           ),
         ),
@@ -87,7 +95,10 @@ class PhotoItemWidget extends GetWidget<MainLogic> {
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                //拼接名字 作者-图片id.jpg
+                controller.downloadPhoto("${photo.photographer}-${photo.id}.jpg", photo.src?.original??"");
+              },
               icon: Icon(
                 Icons.download,
                 size: 80.r,

@@ -1,8 +1,15 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:pexels/net/bean/collection_info_mine.dart';
 import 'package:pexels/net/net_request.dart';
 import 'package:pexels/net/net_state.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'bean/collection_contents_info.dart';
 import 'bean/curated_photos.dart';
@@ -56,11 +63,13 @@ class Api {
 
   ///获取我的收藏列表
   static Future<Request<CollectionInfoMine>> getMineCollections(
-      {int pageIndex = 1, int pageSize = 10,CancelToken? cancelToken}) {
-    return NetUtil.instance.dio().get(apiCollectionMine, queryParameters: {
-      "per_page": pageSize,
-      "page": pageIndex
-    },cancelToken: cancelToken).then<Request<CollectionInfoMine>>((value) {
+      {int pageIndex = 1, int pageSize = 10, CancelToken? cancelToken}) {
+    return NetUtil.instance
+        .dio()
+        .get(apiCollectionMine,
+            queryParameters: {"per_page": pageSize, "page": pageIndex},
+            cancelToken: cancelToken)
+        .then<Request<CollectionInfoMine>>((value) {
       if (value.statusCode == 200 && !_checkMaxRequestSize(value.headers)) {
         return Request(NetState.success,
             data: CollectionInfoMine.fromJson(value.data));
@@ -97,6 +106,41 @@ class Api {
     });
   }
 
+  ///下载图片，，前提是已经有读写权限
+  ///[saveName] 图片保存的名字
+  ///[downloadUrl] 图片下载地址
+  static Future<bool> downloadPhoto(
+      String saveName, String downloadUrl, CancelToken cancelToken) async {
+    if (GetPlatform.isAndroid || GetPlatform.isIOS) {
+      //移动端平台直接下载图片的字节流
+      var result = await NetUtil.instance.dio().get(
+            downloadUrl,
+            cancelToken: cancelToken,
+            options: Options(responseType: ResponseType.bytes),
+          );
+      Get.log("cancel Token ${cancelToken.isCancelled}");
+      if (result.statusCode == 200) {
+        //开始保存图片
+        await ImageGallerySaver.saveImage(Uint8List.fromList(result.data),
+             name: saveName);
+
+        return Future.value(true);
+      }else{
+        return Future.value(false);
+      }
+    } else {
+      //todo 其他平台适配
+      // _getSavePath()
+      // return NetUtil.instance.dio().download(
+      //       downloadUrl,
+      //       savePath,
+      //       deleteOnError: true,
+      //       cancelToken: cancelToken,
+      //     );
+      return Future.value(false);
+    }
+  }
+
   ///检查是否超过或已到达最大API请求次数限制
   ///true超过了最大限制，没有数据
   ///false没有超过最大限制，可能有数据
@@ -111,5 +155,27 @@ class Api {
       }
     }
     return false;
+  }
+
+  ///获取保存路径
+  static Future<String?> _getSavePath(
+      String fileName, String downloadUrl) async {
+    String? savePath;
+     if (GetPlatform.isDesktop) {
+      Directory? dir = await getDownloadsDirectory();
+      if (dir != null) {
+        savePath = dir.path + r"\" + fileName;
+      }
+    } else if (GetPlatform.isWeb) {
+      //web
+      if (await canLaunch(downloadUrl)) {
+        launch(downloadUrl, enableJavaScript: true, headers: {
+          "Content-type": "application/octet-stream",
+          "Content-Disposition": "attachment;filename=$fileName"
+        });
+        return null;
+      }
+    }
+    return savePath;
   }
 }
