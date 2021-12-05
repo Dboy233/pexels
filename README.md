@@ -10,7 +10,7 @@ Pexels 官网:[https://www.pexels.com/zh-tw/](https://www.pexels.com/zh-tw/)
 
 - 首页：精选图片推荐
 - 收藏功能：只能查看在网页端的收藏，API没有提供收藏功能。
-- 下载：后期增加。
+- 下载：下载原图保存的相册。
 - 搜索：搜索图片，仅限英语，毕竟国外API。
 
 
