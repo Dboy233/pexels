@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   ///请求出错的时候展示的提示信息
   void _requestErrorTip(bool isShow) {
     if (isShow) {
-      Get.showSnackbar(GetBar(
+      Get.showSnackbar(GetSnackBar(
         backgroundColor: Colors.blue,
         messageText: const Text(
           "数据请求失败了啊。",

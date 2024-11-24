@@ -15,13 +15,12 @@ class EmptyTipWidget extends StatelessWidget {
   final double height;
 
   const EmptyTipWidget(
-      {Key? key,
+      {super.key,
       required this.tip,
       this.isPercent = true,
       this.heightPercent = 0.5,
       this.height = double.infinity})
-      : assert(heightPercent != 0 || heightPercent <= 1),
-        super(key: key);
+      : assert(heightPercent != 0 || heightPercent <= 1);
 
   @override
   Widget build(BuildContext context) {

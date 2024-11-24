@@ -30,8 +30,8 @@ class _DownloadDialogState extends State<DownloadDialog> {
       height: double.infinity,
       child: Center(
         child: Container(
-          width: 600.r,
-          height: 500.r,
+          width: 600.w,
+          height: 600.h,
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(20.r))),
@@ -39,18 +39,18 @@ class _DownloadDialogState extends State<DownloadDialog> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                height: 60.r,
+                height: 60.h,
               ),
               Text(
                 "正在下载",
                 style: TextStyle(
                     color: Colors.black87,
-                    fontSize: 60.sp,
+                    fontSize: 60.h,
                     fontWeight: FontWeight.w500,
                     decoration: TextDecoration.none),
               ),
               SizedBox(
-                height: 60.r,
+                height: 60.h,
               ),
               SizedBox(
                 width: 80.r,
@@ -58,7 +58,7 @@ class _DownloadDialogState extends State<DownloadDialog> {
                 child: const CircularProgressIndicator(),
               ),
               SizedBox(
-                height: 35.r,
+                height: 35.h,
               ),
               TextButton(
                 onPressed: () {
@@ -67,7 +67,7 @@ class _DownloadDialogState extends State<DownloadDialog> {
                 },
                 child: Text(
                   "取消下载",
-                  style: TextStyle(fontSize: 40.sp, color: Colors.red[200]),
+                  style: TextStyle(fontSize: 40.h, color: Colors.red[200]),
                 ),
               )
             ],

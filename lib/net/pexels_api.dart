@@ -3,9 +3,8 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:pexels/net/bean/collection_info_mine.dart';
 import 'package:pexels/net/net_request.dart';
 import 'package:pexels/net/net_state.dart';
@@ -121,7 +120,7 @@ class Api {
       Get.log("cancel Token ${cancelToken.isCancelled}");
       if (result.statusCode == 200) {
         //开始保存图片
-        await ImageGallerySaver.saveImage(Uint8List.fromList(result.data),
+        await ImageGallerySaverPlus.saveImage(Uint8List.fromList(result.data),
              name: saveName);
 
         return Future.value(true);

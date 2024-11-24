@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:pexels/net/net_util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SpUtils {
@@ -108,4 +107,9 @@ extension SpExt on String {
   Future<bool?> setSpBool(bool value) async {
     return SpUtils().put(this, value);
   }
+}
+
+
+class Lazy{
+
 }

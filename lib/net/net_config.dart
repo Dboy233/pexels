@@ -1,3 +1,5 @@
+import '../tools/sp_key.dart';
+
 ///基础请求地址
 const BASE_URL = "https://api.pexels.com/v1";
 
@@ -22,4 +24,4 @@ const PEXELS_KEY_DEF = "563492ad6f917000010000019841bfce1f484ab3945c74722afe8fd1
 var BASE_HEADER = {"Authorization":PEXELS_KEY_DEF};
 
 ///用户使用的认证令牌
-String? User_Auth = null;
+late String? User_Auth = SpKey.USER_AUTH.getSpString;

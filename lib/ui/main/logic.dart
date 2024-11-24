@@ -6,7 +6,6 @@ import 'package:pexels/net/net_config.dart';
 import 'package:pexels/net/pexels_api.dart';
 import 'package:pexels/tools/getx_extensions.dart';
 import 'package:pexels/tools/sp_key.dart';
-import 'package:pexels/tools/sp_utils.dart';
 import 'package:pexels/ui/collections/view.dart';
 import 'package:pexels/ui/home/view.dart';
 import 'package:pexels/ui/search/view.dart';
@@ -93,25 +92,21 @@ class MainLogic extends GetxController {
       msgTip.alwaysUpToDate("下载地址获取失败~");
       return;
     }
-    //权限申请
-    if (GetPlatform.isIOS) {
-      var permission = await Permission.photos.status;
-      if (permission.isDenied) {
-        //申请权限，如果被拒绝了提示
-        var requestPermission = await Permission.photos.request();
-        if (requestPermission.isDenied) {
-          msgTip.alwaysUpToDate("没有权限,请开启访问相册权限～");
-          return;
-        }
-      }
-    } else if (GetPlatform.isAndroid) {
-      var permission = await Permission.storage.status;
-      if (permission.isDenied) {
-        var requestPermission = await Permission.storage.request();
-        if (requestPermission.isDenied) {
+    //权限申请,先尝试申请高版本的权限 ios和android通用的权限
+    var permission = await Permission.photos.request();
+    if (permission.isDenied) {
+      //如果权限被拒绝了,再单独判断是否是android平台,尝试使用低版本api请求权限
+      if (GetPlatform.isAndroid) {
+        var androidPermission = await Permission.storage.request();
+        if (androidPermission.isDenied) {
+          androidPermission.printError(info: "dboy");
           msgTip.alwaysUpToDate("没有权限,请开启读写权限～");
           return;
         }
+      } else {
+        permission.printError(info: "dboy");
+        msgTip.alwaysUpToDate("没有权限,请开启读写权限～");
+        return;
       }
     }
 
